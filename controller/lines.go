@@ -60,13 +60,13 @@ func Lines(tpStr string, sep, regxStr string) {
 				os.Stdout.Write(doc.Bytes())
 			}
 		} else if regxStr != "" {
-			var doc bytes.Buffer
 			groups := regx.FindAllStringSubmatch(line, -1)
 			//fmt.Println("groups", groups)
 			for _, group := range groups {
+				var doc bytes.Buffer
 				tmpl.Execute(&doc, group)
+				os.Stdout.WriteString(doc.String())
 			}
-			os.Stdout.WriteString(doc.String())
 		}
 	}
 }
