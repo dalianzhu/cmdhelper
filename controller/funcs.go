@@ -5,9 +5,27 @@ import (
 	"reflect"
 	"strings"
 	"text/template"
+
+	"github.com/Masterminds/sprig"
 )
 
+var masterMap = sprig.TxtFuncMap()
+
+func init() {
+	tp := make(template.FuncMap)
+	for key, item := range masterMap {
+		tp[key] = item
+	}
+	for key, item := range MapFuncs {
+		tp[key] = item
+	}
+	MapFuncs = tp
+}
+
 var MapFuncs = template.FuncMap{
+	"format": func(f string, i ...interface{}) string {
+		return fmt.Sprintf(f, i...)
+	},
 	"eol": func() string {
 		return "\n"
 	},
